@@ -199,7 +199,15 @@ function ComponentPreview({ comp }: { comp: PageComponent }) {
   if (comp.kind === "Text") {
     return <p className="preview-text">{comp.content}</p>;
   } else if (comp.kind === "Header") {
-    const Tag = `h${comp.level}` satisfies "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+    const tagMap = {
+      1: "h1",
+      2: "h2",
+      3: "h3",
+      4: "h4",
+      5: "h5",
+      6: "h6",
+    } as const;
+    const Tag = tagMap[comp.level];
     return <Tag className="preview-header">{comp.content}</Tag>;
   } else if (comp.kind === "TextBox") {
     return (

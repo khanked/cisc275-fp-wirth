@@ -93,14 +93,3 @@ ${pageFunctions}
 start_server(${stateName}())
 `;
 }
-
-function defaultForType(type: string): string {
-  const t = type.trim().toLowerCase();
-  if (t === "str") return '""';
-  if (t === "int") return "0";
-  if (t === "float") return "0.0";
-  if (t === "bool") return "False";
-  if (t.startsWith("list")) return "[]";
-  if (t.startsWith("dict")) return "{}";
-  return '""';
-}
