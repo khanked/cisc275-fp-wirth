@@ -1,0 +1,40 @@
+import {
+  loadProjects,
+  saveProject,
+  loadProject,
+  deleteProject,
+} from "../src/services/storage";
+import type { Project } from "../src/models/types";
+
+const mockProject: Project = {
+  id: "test-1",
+  name: "Test Project",
+  description: "A test",
+  lastModified: "2024-01-01",
+  pages: [],
+  routes: [],
+  stateModel: {
+    primary: { name: "State", attributes: [] },
+    secondary: { name: "Secondary", attributes: [] },
+  },
+  annotations: [],
+};
+
+beforeEach(() => {
+  localStorage.clear();
+});
+
+test("loadProjects returns empty array when nothing stored", () => {
+  expect(loadProjects()).toEqual([]);
+});
+
+test("saveProject and loadProject work", () => {
+  saveProject(mockProject);
+  expect(loadProject("test-1")).toEqual(mockProject);
+});
+
+test("deleteProject removes a project", () => {
+  saveProject(mockProject);
+  deleteProject("test-1");
+  expect(loadProject("test-1")).toBeNull();
+});
