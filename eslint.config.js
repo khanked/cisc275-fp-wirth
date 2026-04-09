@@ -90,6 +90,9 @@ export default defineConfig([
             // https://typescript-eslint.io/rules/no-unnecessary-condition
             // Disallow conditionals where the type is always truthy or always falsy.
             "@typescript-eslint/no-unnecessary-condition": "error",
+
+            // Context files commonly export both components and hooks together.
+            "react-refresh/only-export-components": "warn",
         },
     },
 ]);

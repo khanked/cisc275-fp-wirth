@@ -1,11 +1,7 @@
 import { render, screen } from "@testing-library/react";
-
 import { App } from "../src/App";
 
-test("App component display header", () => {
-    render(<App />);
-
-    const heading = screen.getByText(/Final project template/i);
-
-    expect(heading).toBeInTheDocument();
+test("renders dashboard by default", () => {
+  render(<App />);
+  expect(screen.getByText(/Drafter Drafter/i)).toBeInTheDocument();
 });
