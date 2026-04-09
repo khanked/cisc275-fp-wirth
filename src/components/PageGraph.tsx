@@ -66,16 +66,20 @@ export function PageGraph() {
 
   const onConnect = useCallback(
     (connection: Connection) => {
+      const fromPage = project.pages.find((p) => p.id === connection.source);
+      const toPage = project.pages.find((p) => p.id === connection.target);
+      const fromName = fromPage?.name ?? connection.source;
+      const toName = toPage?.name ?? connection.target;
       const newRoute = {
         id: uuidv4(),
         fromPageId: connection.source,
         toPageId: connection.target,
-        label: `${connection.source} -> ${connection.target}`,
+        label: `${fromName} → ${toName}`,
       };
       addRoute(newRoute);
       setEdges((eds) => addEdge(connection, eds));
     },
-    [addRoute, setEdges]
+    [addRoute, setEdges, project.pages]
   );
 
   function handleAddPage(): void {

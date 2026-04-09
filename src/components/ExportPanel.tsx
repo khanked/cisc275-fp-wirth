@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useProject } from "../context/ProjectContext";
 import { exportToDocx } from "../services/docxExport";
 import { exportProject, importProject } from "../services/jsonExport";
@@ -7,6 +7,8 @@ import { saveProject } from "../services/storage";
 export function ExportPanel() {
   const { project, updateProject } = useProject();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [importError, setImportError] = useState<string | null>(null);
+  const [importSuccess, setImportSuccess] = useState(false);
 
   function handleDocx(): void {
     void exportToDocx(project);
@@ -26,13 +28,21 @@ export function ExportPanel() {
   function handleImport(e: React.ChangeEvent<HTMLInputElement>): void {
     const file = e.target.files?.[0];
     if (!file) return;
+    setImportError(null);
+    setImportSuccess(false);
     const reader = new FileReader();
     reader.onload = (event) => {
       const text = event.target?.result;
       if (typeof text !== "string") return;
-      const imported = importProject(text);
-      saveProject(imported);
-      updateProject(imported);
+      try {
+        const imported = importProject(text);
+        saveProject(imported);
+        updateProject(imported);
+        setImportSuccess(true);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Import failed.";
+        setImportError(message);
+      }
     };
     reader.readAsText(file);
   }
@@ -73,6 +83,16 @@ export function ExportPanel() {
           >
             Choose JSON File
           </button>
+          {importError && (
+            <p className="import-error" role="alert">
+              ⚠️ {importError}
+            </p>
+          )}
+          {importSuccess && (
+            <p className="import-success" role="status">
+              ✅ Project imported successfully.
+            </p>
+          )}
         </div>
       </div>
     </div>

@@ -209,4 +209,6 @@ body {
 .empty-state { text-align: center; color: var(--text-muted); padding: 40px; }
 .error-page { text-align: center; padding: 60px 24px; }
 .error-page h1 { font-size: 2rem; margin-bottom: 20px; }
+.import-error { color: var(--danger); font-size: 0.85rem; margin-top: 8px; }
+.import-success { color: var(--success); font-size: 0.85rem; margin-top: 8px; }
 

@@ -1,11 +1,18 @@
 import type { Project } from "../models/types";
+import { isProject } from "../models/types";
 
 const STORAGE_KEY = "drafter-drafter-projects";
 
 export function loadProjects(): Project[] {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) return [];
-  return JSON.parse(raw) as Project[];
+  try {
+    const parsed = JSON.parse(raw) as object[];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((item): item is Project => isProject(item));
+  } catch {
+    return [];
+  }
 }
 
 export function saveProjects(projects: Project[]): void {

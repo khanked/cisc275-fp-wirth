@@ -100,3 +100,21 @@ export interface Project {
   stateModel: StateModel;
   annotations: Annotation[];
 }
+
+type JsonObject = Record<string, string | number | boolean | null | object>;
+
+export function isProject(value: object | null): value is Project {
+  if (!value) return false;
+  const v = value as JsonObject;
+  return (
+    typeof v["id"] === "string" &&
+    typeof v["name"] === "string" &&
+    typeof v["description"] === "string" &&
+    typeof v["lastModified"] === "string" &&
+    Array.isArray(v["pages"]) &&
+    Array.isArray(v["routes"]) &&
+    typeof v["stateModel"] === "object" &&
+    v["stateModel"] !== null &&
+    Array.isArray(v["annotations"])
+  );
+}
